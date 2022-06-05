@@ -21,7 +21,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.h2database:h2' // h2 데이터베이스 접속을 위한 클라이언트
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -34,3 +34,5 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// h2 db 이름 ~/jdbc 로 설정함.
