@@ -83,6 +83,53 @@ public class MemberRepositoryV0 {
         }
     }
 
+    public void update(String memberId, int money) throws SQLException {
+        String sql = "update member set money = ? where member_id = ?";
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = getConnection(); // 커녁션 획득
+            pstmt = con.prepareStatement(sql); // 쿼리 날림
+
+            pstmt.setInt(1, money); // 쿼리 조건절 파라미터 바인딩
+            pstmt.setString(2, memberId); // 쿼리 조건절 파라미터 바인딩
+
+            int resultSize = pstmt.executeUpdate();// 쿼리 실행
+            log.info("resultSize={}", resultSize);
+
+        } catch (SQLException e) {
+            log.error("db error", e);
+            throw e;
+        } finally {
+            close(con, pstmt, null);
+        }
+    }
+
+    public void delete(String memberId) throws SQLException {
+        String sql = "delete from member where member_id = ?";
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = getConnection(); // 커녁션 획득
+            pstmt = con.prepareStatement(sql); // 쿼리 날림
+
+            pstmt.setString(1, memberId); // 쿼리 조건절 파라미터 바인딩
+
+            pstmt.executeUpdate();// 쿼리 실행
+
+        } catch (SQLException e) {
+            log.error("db error", e);
+            throw e;
+        } finally {
+            close(con, pstmt, null);
+        }
+
+    }
+
     // 사용한 객체 닫아주기기
     private void close(Connection con, Statement stmt, ResultSet rs) {
 
