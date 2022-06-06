@@ -5,6 +5,7 @@ import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
+import java.util.NoSuchElementException;
 
 /**
  * JDBC - DriverManager 사용해서 개발
@@ -45,6 +46,41 @@ public class MemberRepositoryV0 {
         // con.close()는 호출되지 않는다.
         // 이 문제를 해결하기 위해 코드를 아래처럼 작성해야 한다.
 
+    }
+
+    public Member findById(String memberId) throws SQLException {
+        String sql = "select * from member where member_id = ?";
+
+        Connection con = null;
+
+        PreparedStatement pstmt = null;
+
+        ResultSet rs = null; // 쿼리 결과 담고있는 통
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setString(1, memberId);
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) { // 첫번째 데이터가 있냐? 있으면 t, 없으면 f
+                Member member = new Member();
+                member.setMemberId(rs.getString("member_id"));
+                member.setMoney(rs.getInt("money"));
+
+                return member;
+            } else {
+                throw new NoSuchElementException("member not found memberId = " + memberId);
+            }
+
+        } catch (SQLException e) {
+            log.error("db error", e);
+            throw e;
+        } finally {
+            close(con, pstmt, rs);
+        }
     }
 
     // 사용한 객체 닫아주기기
