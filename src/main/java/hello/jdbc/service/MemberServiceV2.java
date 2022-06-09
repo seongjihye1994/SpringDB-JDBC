@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 트랜잭션 사용 - 파라미터 연동, 풀을 고려한 종료
@@ -52,6 +54,7 @@ public class MemberServiceV2 {
     }
 
     private void bizLogic(Connection con, String fromId, String toId, int money) throws SQLException {
+
         Member fromMember = memberRepository.findById(con, fromId);
         Member toMember = memberRepository.findById(con, toId);
 
