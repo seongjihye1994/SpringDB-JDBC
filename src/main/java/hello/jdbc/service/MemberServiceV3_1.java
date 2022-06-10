@@ -80,15 +80,4 @@ public class MemberServiceV3_1 {
             throw new IllegalStateException("이체 중 예외 발생!");
         }
     }
-
-    private void release(Connection con) {
-        if (con != null) {
-            try {
-                con.setAutoCommit(true); // 풀에 반납 하기 전 먼저 오토 커밋을 true 로 적용하고
-                con.close(); // 풀에 반납해야 한다.
-            } catch (Exception e) {
-                log.info("error", e);
-            }
-        }
-    }
 }
