@@ -1,10 +1,7 @@
 package hello.jdbc.service;
 
 import hello.jdbc.domain.Member;
-import hello.jdbc.repository.MemberRepository;
-import hello.jdbc.repository.MemberRepositoryV3;
-import hello.jdbc.repository.MemberRepositoryV4_1;
-import hello.jdbc.repository.MemberRepositoryV4_2;
+import hello.jdbc.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -60,8 +57,10 @@ class MemberServiceV4Test {
         @Bean
         MemberRepository memberRepository() {
 //            return new MemberRepositoryV4_1(dataSource);
-            return new MemberRepositoryV4_2(dataSource);
+//            return new MemberRepositoryV4_2(dataSource);
+            return new MemberRepositoryV5(dataSource);
         }
+
 
 
         @Bean
@@ -88,6 +87,7 @@ class MemberServiceV4Test {
     void AopCheck() {
         log.info("memberService class={}", memberService.getClass());
         log.info("memberRepository class={}", memberRepository.getClass());
+
         Assertions.assertThat(AopUtils.isAopProxy(memberService)).isTrue(); // memberService가 프록시냐?
         Assertions.assertThat(AopUtils.isAopProxy(memberRepository)).isFalse(); // memberRepository가 프록시가 아니냐?
     }
